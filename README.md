@@ -1,4 +1,4 @@
-# NCHD: A dead simple, colourised netCDF file header viewer, written in rust.
+# NCHDR: A dead simple, colourised netCDF file header viewer, written in rust.
 
 My use case for ncdump is *almost exclusively* `ncdump -h $FILE`. 
 
@@ -11,7 +11,9 @@ This tool solves these glaring errors, by providing shorter command name, and co
 
 ## Installation
 
-`pip install nchd`
+`pip install nchd` to install the Python version.
+
+How to install the Rust version is TBD.
 
 ## Usage
 
