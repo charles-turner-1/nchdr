@@ -1,2 +1,5 @@
 [target.aarch64-apple-darwin]
-rustflags = ["-C", "link-args=-Wl,-rpath,/opt/homebrew/opt/netcdf/lib", "-C", "link-args=-Wl,-rpath,/opt/homebrew/opt/hdf5/lib"]
+rustflags = ["-C", "link-args=-Wl,-rpath,/opt/homebrew/opt/netcdf/lib",
+             "-C", "link-args=-Wl,-rpath,/opt/homebrew/opt/hdf5/lib",
+             "-C", "link-args=-Wl,-rpath,opt/local/lib",
+             ]
