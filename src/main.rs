@@ -1,21 +1,14 @@
+mod attrs;
 mod dims;
 mod vars;
 
+use attrs::get_attr_info;
 use colored::Colorize;
 use dims::get_dim_info;
 use netcdf::{self};
 use std::path::Path;
 use vars::get_var_info;
 
-trait HasName {
-    fn name(&self) -> &str;
-}
-
-impl<'a> HasName for netcdf::Attribute<'a> {
-    fn name(&self) -> &str {
-        self.name()
-    }
-}
 
 fn main() -> Result<(), netcdf::Error> {
     let path =
@@ -40,20 +33,13 @@ fn main() -> Result<(), netcdf::Error> {
         get_var_info(&file, &var.name());
     }
 
-    println!("{}", "// global attributes:".cyan().bold());
-    print_attrs(global_attrs);
+    println!("{}", "\n// global attributes:".cyan().bold());
+    for attr in global_attrs {
+        get_attr_info(&file, attr.name())
+    }
     print_skeleton_close();
 
     Ok(())
-}
-
-fn print_attrs<T>(attrs: Vec<T>)
-where
-    T: HasName,
-{
-    for attr in attrs {
-        println!("\t{} ;", attr.name())
-    }
 }
 
 fn print_skeleton_opening(f_stem: &str) {
