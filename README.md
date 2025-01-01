@@ -11,9 +11,11 @@ This tool solves these glaring errors, by providing shorter command name, and co
 
 ## Installation
 
-`pip install nchd` to install the Python version.
+- Clone this repository
+- Run `cargo build --release`
+- Copy the binary from `target/release/nchdr` to somewhere in your `$PATH`.
 
-How to install the Rust version is TBD.
+You will probably also need to update the rpath configurations in config.toml to link to the correct location of the netCDF library on your system. Fixing this is on my radar.
 
 ## Usage
 
@@ -23,7 +25,7 @@ nchdr $FILE
 
 ## Options
 
-- `--help`: Show help message and exit
+- `--help`: Show help message and exit... Current not implemented.
 
 ## Contributing
 
