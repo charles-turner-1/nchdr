@@ -8,15 +8,24 @@ use dims::get_dim_info;
 use netcdf::{self};
 use std::path::Path;
 use vars::get_var_info;
+use std::env;
+use std::error::Error;
 
 
-fn main() -> Result<(), netcdf::Error> {
-    let path =
-        Path::new("/Users/u1166368/Rust/nchdr/tests/data/access-om2/output001/ocean/ocean.nc");
+fn main() -> Result<(), Box< dyn Error>> {
+    let args: Vec<String> = env::args().collect();
+    
+    if args.len() < 2 {
+        return Err("Did not provide valid filename".into());
+    } else if args.len() > 2 {
+        return Err("Must provide single filename".into());
+    }
 
-    let file: netcdf::File = netcdf::open(path)?;
+    let f_path = Path::new(args.last().unwrap());
 
-    let file_stem = extract_fname(&path)?;
+    let file: netcdf::File = netcdf::open(f_path)?;
+
+    let file_stem = extract_fname(&f_path)?;
     print_skeleton_opening(&file_stem);
 
     let variables: Vec<_> = file.variables().collect();
