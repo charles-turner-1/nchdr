@@ -67,8 +67,8 @@ fn format_attr(attr: &netcdf::Attribute) -> String {
         Ok(value) => match value {
             netcdf::AttributeValue::Uchar(ch) => format!("{}", ch),
             netcdf::AttributeValue::Double(db) => format!("{}", db),
-            netcdf::AttributeValue::Float(f) => format!("{}", f),
-            netcdf::AttributeValue::Int(i) => format!("{}", i),
+            netcdf::AttributeValue::Float(f) => format!("{}.f", f),
+            netcdf::AttributeValue::Int(i) => { if i < 1_000 {format!("{}", i)} else {format!("{:.1e}", i as f64)} },
             netcdf::AttributeValue::Longlong(l) => format!("{}", l),
             netcdf::AttributeValue::Schar(s) => format!("{}", s),
             netcdf::AttributeValue::Short(sh) => format!("{}", sh),
@@ -83,7 +83,7 @@ fn format_attr(attr: &netcdf::Attribute) -> String {
                 .join(", "),
             netcdf::AttributeValue::Floats(fs) => fs
                 .iter()
-                .map(|f| format!("{}", f))
+                .map(|f| format!("{}.f", f))
                 .collect::<Vec<String>>()
                 .join(", "),
             netcdf::AttributeValue::Ints(is) => is
