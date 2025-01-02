@@ -34,7 +34,7 @@ nchdr $FILE
 
 ## Options
 
-- `--help`: Show help message and exit... Current not implemented.
+- `--help`: Show help message and exit... Currently not implemented.
 
 ## Contributing
 
