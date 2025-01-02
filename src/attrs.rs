@@ -54,6 +54,7 @@ fn format_val<T>(val: T) -> String
 where
     T: Signed + ToPrimitive + std::fmt::Display + std::cmp::PartialOrd,
 {
+    // Would be nice to get rid of the unwraps, don't know how to do that well.
     if (val.to_f64().unwrap()).abs() < 1_000 as f64 {
         format!("{}", val)
     } else {
