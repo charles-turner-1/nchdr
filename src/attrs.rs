@@ -1,5 +1,6 @@
 use colored::Colorize;
 use netcdf::{self};
+use num::{self, Signed, ToPrimitive};
 
 pub fn get_attr_info(file: &netcdf::File, attr_name: &str) {
     // Take reference to a file and a variable in it, and get all the attributes
@@ -23,96 +24,46 @@ pub fn format_attr(attr: &netcdf::Attribute) -> String {
     match attr_value {
         Ok(value) => match value {
             netcdf::AttributeValue::Uchar(ch) => format!("{}", ch),
-            netcdf::AttributeValue::Double(db) => {
-                if db.abs() < 1000.0 {
-                    format!("{}", db)
-                } else {
-                    format!("{:.1e}", db)
-                }
-            }
-            netcdf::AttributeValue::Float(f) => {
-                if f.abs() < 1_000.0 {
-                    format!("{}", f)
-                } else {
-                    format!("{:.1e}", f)
-                }
-            }
-            netcdf::AttributeValue::Int(i) => {
-                if i.abs() < 1_000 {
-                    format!("{}", i)
-                } else {
-                    format!("{:.1e}", i as f64)
-                }
-            }
-            netcdf::AttributeValue::Longlong(l) => {
-                if l.abs() < 1_000 {
-                    format!("{}", l)
-                } else {
-                    format!("{:.1e}", l as f64)
-                }
-            }
-            netcdf::AttributeValue::Schar(s) => format!("{}", s),
+            netcdf::AttributeValue::Schar(item) => format!("{}", item),
             netcdf::AttributeValue::Short(sh) => format!("{}", sh),
             netcdf::AttributeValue::Str(s) => format!("\"{}\"", s),
             netcdf::AttributeValue::Uint(u) => format!("{}", u),
             netcdf::AttributeValue::Ulonglong(ull) => format!("{}", ull),
             netcdf::AttributeValue::Ushort(ush) => format!("{}", ush),
-            netcdf::AttributeValue::Doubles(dbs) => dbs
-                .iter()
-                .map(|db| format!("{}", db))
-                .collect::<Vec<String>>()
-                .join(", "),
-            netcdf::AttributeValue::Floats(fs) => fs
-                .iter()
-                .map(|f| format!("{}.f", f))
-                .collect::<Vec<String>>()
-                .join(", "),
-            netcdf::AttributeValue::Ints(is) => is
-                .iter()
-                .map(|i| format!("{}", i))
-                .collect::<Vec<String>>()
-                .join(", "),
-            netcdf::AttributeValue::Longlongs(lls) => lls
-                .iter()
-                .map(|ll| format!("{}", ll))
-                .collect::<Vec<String>>()
-                .join(", "),
-            netcdf::AttributeValue::Schars(schs) => schs
-                .iter()
-                .map(|sch| format!("{}", sch))
-                .collect::<Vec<String>>()
-                .join(", "),
-            netcdf::AttributeValue::Shorts(shts) => shts
-                .iter()
-                .map(|sht| format!("{}", sht))
-                .collect::<Vec<String>>()
-                .join(", "),
-            netcdf::AttributeValue::Strs(ss) => ss
-                .iter()
-                .map(|s| format!("{}", s))
-                .collect::<Vec<String>>()
-                .join(", "),
-            netcdf::AttributeValue::Uchars(uchs) => uchs
-                .iter()
-                .map(|uch| format!("{}", uch))
-                .collect::<Vec<String>>()
-                .join(", "),
-            netcdf::AttributeValue::Uints(uis) => uis
-                .iter()
-                .map(|ui| format!("{}", ui))
-                .collect::<Vec<String>>()
-                .join(", "),
-            netcdf::AttributeValue::Ulonglongs(ulls) => ulls
-                .iter()
-                .map(|ull| format!("{}", ull))
-                .collect::<Vec<String>>()
-                .join(", "),
-            netcdf::AttributeValue::Ushorts(ushts) => ushts
-                .iter()
-                .map(|usht| format!("{}", usht))
-                .collect::<Vec<String>>()
-                .join(", "),
+            netcdf::AttributeValue::Double(item) => format_val(item),
+            netcdf::AttributeValue::Float(item) => format_val(item),
+            netcdf::AttributeValue::Int(item) => format_val(item),
+            netcdf::AttributeValue::Longlong(item) => format_val(item),
+            netcdf::AttributeValue::Doubles(items) => format_values(items),
+            netcdf::AttributeValue::Floats(items) => format_values(items),
+            netcdf::AttributeValue::Ints(items) => format_values(items),
+            netcdf::AttributeValue::Longlongs(items) => format_values(items),
+            netcdf::AttributeValue::Schars(items) => format_values(items),
+            netcdf::AttributeValue::Shorts(items) => format_values(items),
+            netcdf::AttributeValue::Strs(items) => format_values(items),
+            netcdf::AttributeValue::Uchars(items) => format_values(items),
+            netcdf::AttributeValue::Uints(items) => format_values(items),
+            netcdf::AttributeValue::Ulonglongs(items) => format_values(items),
+            netcdf::AttributeValue::Ushorts(items) => format_values(items),
         },
         Err(_) => "unknown".to_string(),
     }
+}
+
+fn format_val<T>(val: T) -> String
+where
+    T: Signed + ToPrimitive + std::fmt::Display + std::cmp::PartialOrd,
+{
+    if (val.to_f64().unwrap()).abs() < 1_000 as f64 {
+        format!("{}", val)
+    } else {
+        format!("{:.1e}", val.to_f64().unwrap())
+    }
+}
+
+fn format_values<T: std::fmt::Display>(vals: Vec<T>) -> String {
+    vals.iter()
+        .map(|x| format!("{}", x))
+        .collect::<Vec<String>>()
+        .join(", ")
 }

@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 netcdf = "0.10.5"
 colored = "2.2.0"
+num = "0.4.3"

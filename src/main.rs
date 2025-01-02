@@ -6,15 +6,14 @@ use attrs::get_attr_info;
 use colored::Colorize;
 use dims::get_dim_info;
 use netcdf::{self};
-use std::path::Path;
-use vars::get_var_info;
 use std::env;
 use std::error::Error;
+use std::path::Path;
+use vars::get_var_info;
 
-
-fn main() -> Result<(), Box< dyn Error>> {
+fn main() -> Result<(), Box<dyn Error>> {
     let args: Vec<String> = env::args().collect();
-    
+
     if args.len() < 2 {
         return Err("Did not provide valid filename".into());
     } else if args.len() > 2 {
