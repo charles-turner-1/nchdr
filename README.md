@@ -23,6 +23,15 @@ You will probably also need to update the rpath configurations in config.toml to
 nchdr $FILE
 ```
 
+## Gallery
+
+### Before
+
+![Before](img/ncdump-h.png)
+
+### After
+![After](img/nchdr.png)
+
 ## Options
 
 - `--help`: Show help message and exit... Current not implemented.
