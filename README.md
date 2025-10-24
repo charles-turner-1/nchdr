@@ -7,7 +7,7 @@ This presents two mild inconveniences:
 1. Output is not colourised. This is kind of annoying.
 2. It's too many characters to type.
 
-This tool solves these glaring errors, by providing shorter command name, and colourising the output. It mostly exists because I wanted to write a CLI tool in Rust. For reference, I'm using the output of [nchd](https://github.com/charles-turner-1/nchd) as a target for what this tool should output.
+This tool solves these glaring errors, by providing shorter command name, and colourising the output. It mostly exists because I wanted to write a CLI tool in Rust. For reference, I'm using the output of `ncdump -h` as a target for what this tool should output.
 
 ## Installation
 
